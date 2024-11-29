@@ -66,7 +66,7 @@ I help clients transform their ideas into **world-class mobile apps**.
 
 📧 **Email:** [yahyashoaib112@gmail.com](mailto:yahyashoaib112@gmail.com)  
 📱 **Phone:** +92-304-008-5246  
-🔗 **LinkedIn:** [linkedin.com/in/yahya1oshuaib](https://linkedin.com/in/yahya1oshuaib)  
+🔗 **LinkedIn:** [linkedin.com/in/yahya10shoaib](https://linkedin.com/in/yahya10shoaib)  
 
 ---
 
