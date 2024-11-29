@@ -74,14 +74,7 @@ I help clients transform their ideas into **world-class mobile apps**.
 - **React Native Developer at Semantic Solutions** *(June 2022 - Present)*  
   - Key role in mobile app development, optimizing performance, and delivering scalable solutions.  
 - **React Native Intern at Solutions Wall** *(April 2022 - June 2022)*  
-  - Hands-on experience in debugging and collaborating on development projects.  
-
----
-
-## 🎨 Color Scheme Used:  
-- **Background:** `#0d1117` (Dark Theme)  
-- **Primary Text:** `#c9d1d9` (Light Gray)  
-- **Highlight Color:** `#58a6ff` (Blue Accent)  
+  - Hands-on experience in debugging and collaborating on development projects.    
 
 ---
 
