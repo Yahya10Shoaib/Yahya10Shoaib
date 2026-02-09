@@ -3,12 +3,21 @@ import { useCallback, useRef } from 'react';
 import type { PortfolioData } from '../types/portfolio';
 import { HeroBackground } from './HeroBackground';
 
+const getInitials = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
 export function Hero({ data }: { data: PortfolioData }) {
   const sectionRef = useRef<HTMLElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
+  const hasImage = Boolean(data.profileImage?.trim());
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
@@ -61,18 +70,34 @@ export function Hero({ data }: { data: PortfolioData }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.25, duration: 0.4 }}
         >
-          {data.profileImage?.trim() ? (
-            <img src={data.profileImage} alt="" className="hero-avatar" />
-          ) : (
-            <div className="hero-avatar hero-avatar-initials" aria-hidden>
-              {data.name
-                .split(/\s+/)
-                .map((w) => w[0])
-                .join('')
-                .slice(0, 2)
-                .toUpperCase()}
-            </div>
-          )}
+          <div className="hero-avatar-flip">
+            <motion.div
+              className="hero-avatar-inner"
+              initial={{ rotateY: 0 }}
+              animate={{ rotateY: 180 }}
+              transition={{
+                delay: 0.7,
+                duration: 0.7,
+                ease: [0.33, 0.84, 0.5, 1],
+              }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div className="hero-avatar-face hero-avatar-back" aria-hidden>
+                <div className="hero-avatar hero-avatar-initials">
+                  {getInitials(data.name)}
+                </div>
+              </div>
+              <div className="hero-avatar-face hero-avatar-front" aria-hidden>
+                {hasImage ? (
+                  <img src={data.profileImage!} alt="" className="hero-avatar" />
+                ) : (
+                  <div className="hero-avatar hero-avatar-initials">
+                    {getInitials(data.name)}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
         <motion.h1
           className="hero-name"
