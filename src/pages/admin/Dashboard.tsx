@@ -68,7 +68,7 @@ function DashboardInner() {
   const navigate = useNavigate();
   const [data, setData] = useState<PortfolioData>(getPortfolioData);
   const [categoryRenameDraft, setCategoryRenameDraft] = useState<Record<string, string>>({});
-  const [apiSecret, setApiSecret] = useState(getPortfolioApiSecret() ?? '');
+  const apiSecret = getPortfolioApiSecret() ?? '';
   const [lastSync, setLastSync] = useState<SyncResult | null>(null);
   const [syncing, setSyncing] = useState(false);
 
