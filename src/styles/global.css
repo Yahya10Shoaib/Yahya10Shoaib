@@ -611,6 +611,19 @@ input, textarea {
   margin-top: 0;
 }
 
+.contact-form-status {
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.contact-form-status.success {
+  color: var(--neon-green);
+}
+
+.contact-form-status.error {
+  color: #ff6b6b;
+}
+
 .contact-submit {
   margin-top: 1rem;
   width: 100%;

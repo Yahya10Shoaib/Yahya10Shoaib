@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import type { PortfolioData } from '../types/portfolio';
 
+const API_BASE = typeof window !== 'undefined' ? window.location.origin : '';
+
 const EmailIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -24,12 +26,31 @@ const LinkedInIcon = () => (
 export function Contact({ data }: { data: PortfolioData }) {
   const { email, github, linkedin } = data.contact;
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio contact from ${formData.name}`);
-    const body = encodeURIComponent(`${formData.message}\n\n---\nFrom: ${formData.name}\nEmail: ${formData.email}`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    setStatus('sending');
+    setErrorMessage('');
+    try {
+      const res = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus('error');
+        setErrorMessage((json.error as string) || `Failed to send (${res.status})`);
+        return;
+      }
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      setStatus('error');
+      setErrorMessage('Network error. Please try again.');
+    }
   };
 
   return (
@@ -82,8 +103,14 @@ export function Contact({ data }: { data: PortfolioData }) {
               onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
               required
             />
-            <button type="submit" className="admin-btn contact-submit">
-              Send Message
+            {status === 'success' && (
+              <p className="contact-form-status success">Thanks! Your message was sent.</p>
+            )}
+            {status === 'error' && (
+              <p className="contact-form-status error">{errorMessage}</p>
+            )}
+            <button type="submit" className="admin-btn contact-submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'Sending…' : 'Send Message'}
             </button>
           </form>
         </div>

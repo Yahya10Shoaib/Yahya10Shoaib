@@ -1,7 +1,7 @@
 import { put, list } from "@vercel/blob";
 
 const BLOB_PATH = "portfolio/data.json";
-const SECRET = "myportfolio";
+const SECRET = process.env.PORTFOLIO_API_SECRET;
 
 function json(res, data, status = 200) {
   res.setHeader("Content-Type", "application/json");
