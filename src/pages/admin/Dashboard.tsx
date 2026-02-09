@@ -1,8 +1,8 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ProtectedRoute, setAdmin } from '../../routes/ProtectedRoute';
-import { getPortfolioData, setPortfolioData, exportPortfolioJson } from '../../utils/portfolioStore';
+import { getPortfolioData, getPortfolioDataAsync, setPortfolioData, exportPortfolioJson, getPortfolioApiSecret, setPortfolioApiSecret } from '../../utils/portfolioStore';
 import type { PortfolioData, Project, ExperienceEntry } from '../../types/portfolio';
 
 function newId(): string {
@@ -68,6 +68,16 @@ function DashboardInner() {
   const navigate = useNavigate();
   const [data, setData] = useState<PortfolioData>(getPortfolioData);
   const [categoryRenameDraft, setCategoryRenameDraft] = useState<Record<string, string>>({});
+  const [apiSecret, setApiSecret] = useState(getPortfolioApiSecret() ?? '');
+
+  useEffect(() => {
+    getPortfolioDataAsync().then(setData);
+  }, []);
+
+  useEffect(() => {
+    if (apiSecret.trim()) setPortfolioApiSecret(apiSecret);
+    else setPortfolioApiSecret('');
+  }, [apiSecret]);
 
   const update = useCallback((updates: Partial<PortfolioData>) => {
     setData((prev) => {
@@ -174,6 +184,20 @@ function DashboardInner() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
+        <section className="admin-section cyber-border admin-sync-section">
+          <h2>Cloud sync</h2>
+          <p className="admin-hint">Set the same value as <code>PORTFOLIO_API_SECRET</code> in Vercel so edits are saved for all visitors. Leave empty to save only on this device.</p>
+          <label>API secret</label>
+          <input
+            className="admin-input"
+            type="password"
+            autoComplete="off"
+            placeholder="Same as Vercel env PORTFOLIO_API_SECRET"
+            value={apiSecret}
+            onChange={(e) => setApiSecret(e.target.value)}
+          />
+        </section>
+
         <section className="admin-section cyber-border">
           <h2>Hero</h2>
           <label>Name</label>

@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getPortfolioData } from '../utils/portfolioStore';
+import { getPortfolioData, getPortfolioDataAsync } from '../utils/portfolioStore';
+import type { PortfolioData } from '../types/portfolio';
 import { Hero } from '../components/Hero';
 import { Skills } from '../components/Skills';
 import { Projects } from '../components/Projects';
@@ -7,7 +9,11 @@ import { Experience } from '../components/Experience';
 import { Contact } from '../components/Contact';
 
 export function Home() {
-  const data = getPortfolioData();
+  const [data, setData] = useState<PortfolioData>(getPortfolioData);
+
+  useEffect(() => {
+    getPortfolioDataAsync().then(setData);
+  }, []);
 
   return (
     <motion.main
