@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ProtectedRoute, setAdmin } from '../../routes/ProtectedRoute';
-import { getPortfolioData, getPortfolioDataAsync, setPortfolioData, exportPortfolioJson, getPortfolioApiSecret, setPortfolioApiSecret } from '../../utils/portfolioStore';
+import { getPortfolioData, getPortfolioDataAsync, setPortfolioData, exportPortfolioJson, getPortfolioApiSecret, setPortfolioApiSecret, type SyncResult } from '../../utils/portfolioStore';
 import type { PortfolioData, Project, ExperienceEntry } from '../../types/portfolio';
 
 function newId(): string {
@@ -69,6 +69,8 @@ function DashboardInner() {
   const [data, setData] = useState<PortfolioData>(getPortfolioData);
   const [categoryRenameDraft, setCategoryRenameDraft] = useState<Record<string, string>>({});
   const [apiSecret, setApiSecret] = useState(getPortfolioApiSecret() ?? '');
+  const [lastSync, setLastSync] = useState<SyncResult | null>(null);
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     getPortfolioDataAsync().then(setData);
@@ -79,10 +81,31 @@ function DashboardInner() {
     else setPortfolioApiSecret('');
   }, [apiSecret]);
 
+  const saveToCloud = useCallback(async () => {
+    setSyncing(true);
+    setLastSync(null);
+    const result = await setPortfolioData(data);
+    setLastSync(result);
+    setSyncing(false);
+  }, [data]);
+
+  const loadFromCloud = useCallback(async () => {
+    setSyncing(true);
+    setLastSync(null);
+    try {
+      const cloud = await getPortfolioDataAsync();
+      setData(cloud);
+      setLastSync({ synced: true });
+    } catch {
+      setLastSync({ synced: false, error: 'Failed to load' });
+    }
+    setSyncing(false);
+  }, []);
+
   const update = useCallback((updates: Partial<PortfolioData>) => {
     setData((prev) => {
       const next = { ...prev, ...updates };
-      setPortfolioData(next);
+      setPortfolioData(next).then(setLastSync);
       return next;
     });
   }, []);
@@ -186,7 +209,7 @@ function DashboardInner() {
       >
         <section className="admin-section cyber-border admin-sync-section">
           <h2>Cloud sync</h2>
-          <p className="admin-hint">Set the same value as <code>PORTFOLIO_API_SECRET</code> in Vercel so edits are saved for all visitors. Leave empty to save only on this device.</p>
+          <p className="admin-hint">Set the same value as <code>PORTFOLIO_API_SECRET</code> in Vercel. Create a Blob store in Vercel (Storage) and redeploy after adding env vars.</p>
           <label>API secret</label>
           <input
             className="admin-input"
@@ -196,6 +219,19 @@ function DashboardInner() {
             value={apiSecret}
             onChange={(e) => setApiSecret(e.target.value)}
           />
+          <div className="admin-sync-actions">
+            <button type="button" className="admin-btn" onClick={saveToCloud} disabled={!apiSecret.trim() || syncing}>
+              {syncing ? '…' : 'Save to cloud now'}
+            </button>
+            <button type="button" className="admin-btn secondary" onClick={loadFromCloud} disabled={syncing}>
+              Load from cloud
+            </button>
+          </div>
+          {lastSync && (
+            <p className={`admin-sync-status ${lastSync.synced ? 'success' : 'error'}`}>
+              {lastSync.synced ? '✓ Synced to cloud' : `✗ ${lastSync.error ?? 'Sync failed'}`}
+            </p>
+          )}
         </section>
 
         <section className="admin-section cyber-border">

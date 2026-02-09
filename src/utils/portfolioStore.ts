@@ -37,12 +37,14 @@ export async function getPortfolioDataAsync(): Promise<PortfolioData> {
   return getPortfolioData();
 }
 
+export type SyncResult = { synced: boolean; status?: number; error?: string };
+
 /** Save locally and, if API secret is set, POST to API so data is shared for all visitors. */
-export async function setPortfolioData(data: PortfolioData): Promise<{ synced: boolean }> {
+export async function setPortfolioData(data: PortfolioData): Promise<SyncResult> {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data, null, 2));
   const secret = typeof window !== 'undefined' ? localStorage.getItem(API_SECRET_KEY) : null;
   if (!secret) {
-    return { synced: false };
+    return { synced: false, error: 'No API secret set' };
   }
   try {
     const res = await fetch(`${getApiBase()}/api/portfolio`, {
@@ -53,9 +55,17 @@ export async function setPortfolioData(data: PortfolioData): Promise<{ synced: b
       },
       body: JSON.stringify(data),
     });
-    return { synced: res.ok };
-  } catch {
-    return { synced: false };
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        synced: false,
+        status: res.status,
+        error: res.status === 401 ? 'Wrong API secret' : (body.error as string) || `HTTP ${res.status}`,
+      };
+    }
+    return { synced: true, status: res.status };
+  } catch (e) {
+    return { synced: false, error: e instanceof Error ? e.message : 'Network error' };
   }
 }
 

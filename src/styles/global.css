@@ -851,6 +851,26 @@ input, textarea {
   margin-bottom: 0.5rem;
 }
 
+.admin-sync-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.admin-sync-status {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.admin-sync-status.success {
+  color: var(--neon-green);
+}
+
+.admin-sync-status.error {
+  color: #ff6b6b;
+}
+
 .admin-card {
   padding: 1rem;
   margin-bottom: 1rem;
