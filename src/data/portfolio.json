@@ -3,6 +3,7 @@
   "title": "Senior React Native Developer",
   "experienceYears": "4+ Years Experience",
   "intro": "I build high-performance mobile apps for Android & iOS with a focus on clean architecture, debugging at scale, and shipping production-ready solutions. Expert in performance optimization, reusable components, and turning complex requirements into maintainable code.",
+  "profileImage": "",
   "skills": {
     "Mobile Development": ["React Native", "Expo", "Expo Router", "Android", "iOS", "TypeScript", "JavaScript"],
     "Frontend": ["React", "React Native CLI", "Reusable Components", "UI/UX"],

@@ -251,6 +251,14 @@ function DashboardInner() {
             onChange={(e) => update({ intro: e.target.value })}
             rows={4}
           />
+          <label>Profile image URL (rounded, above name)</label>
+          <input
+            className="admin-input"
+            type="url"
+            placeholder="https://…"
+            value={data.profileImage ?? ''}
+            onChange={(e) => update({ profileImage: e.target.value })}
+          />
         </section>
 
         <section className="admin-section cyber-border">

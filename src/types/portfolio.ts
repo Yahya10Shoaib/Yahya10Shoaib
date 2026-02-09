@@ -3,6 +3,8 @@ export interface PortfolioData {
   title: string;
   experienceYears: string;
   intro: string;
+  /** Optional profile image URL (hero section, rounded) */
+  profileImage?: string;
   skills: Record<string, string[]>;
   projects: Project[];
   experience: ExperienceEntry[];

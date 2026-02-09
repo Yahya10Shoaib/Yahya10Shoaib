@@ -55,6 +55,25 @@ export function Hero({ data }: { data: PortfolioData }) {
         >
           {data.experienceYears}
         </motion.span>
+        <motion.div
+          className="hero-avatar-wrap"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.25, duration: 0.4 }}
+        >
+          {data.profileImage?.trim() ? (
+            <img src={data.profileImage} alt="" className="hero-avatar" />
+          ) : (
+            <div className="hero-avatar hero-avatar-initials" aria-hidden>
+              {data.name
+                .split(/\s+/)
+                .map((w) => w[0])
+                .join('')
+                .slice(0, 2)
+                .toUpperCase()}
+            </div>
+          )}
+        </motion.div>
         <motion.h1
           className="hero-name"
           initial={{ opacity: 0, y: 16 }}

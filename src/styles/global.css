@@ -75,6 +75,15 @@ html {
   width: 100%;
 }
 
+/* Prevent fixed nav from hiding section when scrolling to anchor */
+[id='hero'],
+[id='skills'],
+[id='projects'],
+[id='experience'],
+[id='contact'] {
+  scroll-margin-top: 0rem;
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--bg-dark);
@@ -157,6 +166,7 @@ input, textarea {
 @media (min-width: 1400px) {
   .hero-inner {
     max-width: 1000px;
+    padding-top: 5rem;
   }
 }
 
@@ -171,6 +181,39 @@ input, textarea {
   border-radius: 4px;
   margin-bottom: 1.5rem;
   box-shadow: 0 0 14px rgba(0, 255, 247, 0.2);
+  margin-bottom: 2rem;
+}
+
+.hero-avatar-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.hero-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-neon);
+  box-shadow: 0 0 24px rgba(0, 255, 247, 0.25), 0 0 48px rgba(178, 75, 243, 0.15);
+  display: block;
+  margin: 0 auto;
+}
+
+.hero-avatar-initials {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 2px solid var(--border-neon);
+  box-shadow: 0 0 24px rgba(0, 255, 247, 0.25), 0 0 48px rgba(178, 75, 243, 0.15);
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, rgba(0, 255, 247, 0.08) 50%, rgba(178, 75, 243, 0.08) 100%);
+  color: var(--neon-cyan);
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.02em;
 }
 
 .hero-name {
