@@ -2,7 +2,9 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const toEmail = process.env.CONTACT_EMAIL;
-const fromEmail = process.env.SENDER_EMAIL;
+const fromEmail = (process.env.SENDER_EMAIL && process.env.SENDER_EMAIL.trim())
+  ? process.env.SENDER_EMAIL.trim()
+  : 'Portfolio <onboarding@resend.dev>';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -26,8 +28,9 @@ export default async function handler(req, res) {
   const html = `<p>${message.trim().replace(/\n/g, '<br>')}</p><hr><p><strong>From:</strong> ${name.trim()}<br><strong>Email:</strong> ${email.trim()}</p>`;
 
   try {
+    const from = fromEmail.includes('<') ? fromEmail : `Portfolio <${fromEmail}>`;
     const { data, error } = await resend.emails.send({
-      from: fromEmail,
+      from,
       to: toEmail,
       replyTo: email.trim(),
       subject,
