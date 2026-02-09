@@ -1,0 +1,85 @@
+{
+  "name": "Yahya Shoaib",
+  "title": "Senior React Native Developer",
+  "experienceYears": "4+ Years Experience",
+  "intro": "I build high-performance mobile apps for Android & iOS with a focus on clean architecture, debugging at scale, and shipping production-ready solutions. Expert in performance optimization, reusable components, and turning complex requirements into maintainable code.",
+  "skills": {
+    "Mobile Development": ["React Native", "Expo", "Expo Router", "Android", "iOS", "TypeScript", "JavaScript"],
+    "Frontend": ["React", "React Native CLI", "Reusable Components", "UI/UX"],
+    "State Management": ["Redux Toolkit", "RTK Query", "TanStack Query"],
+    "Backend & APIs": ["Firebase", "Firestore", "Cloud Functions", "REST APIs", "Socket.IO", "FCM", "OneSignal"],
+    "Tools & DevOps": ["Git", "GitHub", "GitHub Actions", "Expo Build", "Debugging", "Performance Tuning", "WatermelonDB", "Stripe", "Agora", "Google Maps", "Mapbox"]
+  },
+  "projects": [
+    {
+      "id": "1",
+      "title": "MyVisits",
+      "description": "Location-based doctor visit management app. QR-based check-ins, automatic mileage tracking, telehealth support, and visit history export for reporting.",
+      "techStack": ["React Native", "QR Scanner", "Redux", "RTK Query"],
+      "role": "React Native Developer — real-time location, QR flows, performance-focused design"
+    },
+    {
+      "id": "2",
+      "title": "Major Lift",
+      "description": "Platform for engineers to discover jobs, submit bids with estimates, and get assigned by admins. Streamlined bidding and assignment workflow.",
+      "techStack": ["React Native", "Axios", "TanStack Query", "FCM", "Redux"],
+      "role": "React Native Developer — UI, bidding system, modular components"
+    },
+    {
+      "id": "3",
+      "title": "Unihub",
+      "description": "Marketplace for students to list and sell products, event tickets, and services. Connects buyers and sellers within campus communities.",
+      "techStack": ["React Native", "Stripe", "FCM", "Redux"],
+      "role": "React Native Developer — marketplace UI, payments, order management"
+    },
+    {
+      "id": "4",
+      "title": "Unihub Services",
+      "description": "Seller-focused app for managing listings, tracking sales, and monetizing with in-app purchases and Stripe.",
+      "techStack": ["React Native", "Stripe", "FCM", "Redux", "In-app purchases"],
+      "role": "React Native Developer — seller dashboard, payments, navigation"
+    },
+    {
+      "id": "5",
+      "title": "Beetkom",
+      "description": "Property listing app for rent/sale with detailed descriptions, facilities, and photos. Filtering and direct admin contact.",
+      "techStack": ["React Native", "Redux", "i18n", "Firebase Social Login"],
+      "role": "React Native Developer — listings, filters, reusable components"
+    },
+    {
+      "id": "6",
+      "title": "PELP",
+      "description": "English learning app with daily lectures, tests, MCQs, and microphone-based vocabulary practice.",
+      "techStack": ["React Native", "Redux", "i18n", "Firebase Social Login"],
+      "role": "React Native Developer — learning flows, progress tracking, interactive tools"
+    }
+  ],
+  "experience": [
+    {
+      "id": "1",
+      "company": "Viral Square",
+      "role": "React Native Developer",
+      "period": "August 2024 – Present",
+      "highlights": ["Leading mobile app development with focus on performance and scalability", "Integrating real-time updates, Stripe payments, and offline-first capabilities", "Maintaining clean architecture and reusable code components"]
+    },
+    {
+      "id": "2",
+      "company": "Semantic Solutions",
+      "role": "React Native Developer",
+      "period": "June 2022 – July 2024",
+      "highlights": ["Developed multiple production-ready apps for Android & iOS", "Optimized app performance, reusable components, third-party integrations", "Collaborated with cross-functional teams to deliver scalable solutions on tight deadlines"]
+    },
+    {
+      "id": "3",
+      "company": "Solutions Wall",
+      "role": "React Native Intern",
+      "period": "April 2022 – June 2022",
+      "highlights": ["Hands-on debugging and collaboration on real-world app projects", "Contributed to UI enhancement and component reuse strategies"]
+    }
+  ],
+  "contact": {
+    "email": "yahyashoaib112@gmail.com",
+    "github": "https://github.com/Yahya10Shoaib",
+    "linkedin": "https://www.linkedin.com/in/yahya10shoaib/"
+  }
+}
