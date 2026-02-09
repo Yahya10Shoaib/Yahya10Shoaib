@@ -451,14 +451,21 @@ input, textarea {
   box-shadow: 0 0 14px rgba(0, 255, 247, 0.3);
 }
 
-.project-card-visit svg {
-  flex-shrink: 0;
+.project-card-visit--disabled {
+  color: var(--text-muted);
+  border-color: var(--border-subtle);
+  cursor: default;
+  pointer-events: none;
 }
 
-.project-card-visit-disabled {
-  font-size: 0.9rem;
+.project-card-visit--disabled:hover {
   color: var(--text-muted);
-  padding: 0.5rem 1rem;
+  border-color: var(--border-subtle);
+  box-shadow: none;
+}
+
+.project-card-visit svg {
+  flex-shrink: 0;
 }
 
 .project-title {

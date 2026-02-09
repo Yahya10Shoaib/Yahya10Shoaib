@@ -56,7 +56,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             )}
           </div>
           <div className="project-card-back-actions">
-            {hasLink && (
+            {hasLink ? (
               <a
                 href={project.link}
                 target="_blank"
@@ -66,8 +66,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 <span>Visit</span>
                 <ExternalLinkIcon />
               </a>
+            ) : (
+              <span className="project-card-visit project-card-visit--disabled">
+                <span>Visit</span>
+                <ExternalLinkIcon />
+              </span>
             )}
-            {!hasLink && <span className="project-card-visit-disabled">Visit</span>}
           </div>
         </div>
       </div>
