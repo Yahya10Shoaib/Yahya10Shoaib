@@ -209,16 +209,6 @@ function DashboardInner() {
       >
         <section className="admin-section cyber-border admin-sync-section">
           <h2>Cloud sync</h2>
-          <p className="admin-hint">Set the same value as <code>PORTFOLIO_API_SECRET</code> in Vercel. Create a Blob store in Vercel (Storage) and redeploy after adding env vars.</p>
-          <label>API secret</label>
-          <input
-            className="admin-input"
-            type="password"
-            autoComplete="off"
-            placeholder="Same as Vercel env PORTFOLIO_API_SECRET"
-            value={apiSecret}
-            onChange={(e) => setApiSecret(e.target.value)}
-          />
           <div className="admin-sync-actions">
             <button type="button" className="admin-btn" onClick={saveToCloud} disabled={!apiSecret.trim() || syncing}>
               {syncing ? '…' : 'Save to cloud now'}
