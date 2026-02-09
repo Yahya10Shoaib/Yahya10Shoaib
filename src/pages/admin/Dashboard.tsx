@@ -34,15 +34,6 @@ function ChipList({
     }
   };
 
-  const handleAddClick = () => {
-    const v = input.trim();
-    if (v) {
-      onAdd(v);
-      setInput('');
-      inputRef.current?.focus();
-    }
-  };
-
   return (
     <div className="admin-chips-wrap">
       <div className="admin-chips">
