@@ -1,135 +1,67 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useCallback, useRef } from 'react';
+import { motion } from 'framer-motion';
 import type { PortfolioData } from '../types/portfolio';
-import { HeroBackground } from './HeroBackground';
 
-const getInitials = (name: string) =>
-  name
-    .split(/\s+/)
-    .map((w) => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+});
 
 export function Hero({ data }: { data: PortfolioData }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
-  const hasImage = Boolean(data.profileImage?.trim());
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      const rect = sectionRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-      const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-      mouseX.set(x * 4);
-      mouseY.set(y * 3);
-    },
-    [mouseX, mouseY]
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    mouseX.set(0);
-    mouseY.set(0);
-  }, [mouseX, mouseY]);
+  const expLabel = data.experienceYears.split(' ')[0];
+  const projectCount = data.projects.length;
+  const companyCount = data.experience.length;
 
   return (
-    <section
-      ref={sectionRef}
-      className="hero"
-      id="hero"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <HeroBackground />
-      <motion.div
-        className="hero-inner"
-        style={{
-          rotateX: springY,
-          rotateY: springX,
-          transformPerspective: 800,
-        }}
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <motion.span
-          className="hero-badge"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {data.experienceYears}
-        </motion.span>
+    <section className="hero" id="hero">
+      <div className="hero-inner">
+        <div className="hero-content">
+          <motion.span className="hero-badge" {...fadeUp(0.1)}>
+            Available for opportunities
+          </motion.span>
+
+          <motion.h1 className="hero-name" {...fadeUp(0.2)}>
+            {data.name}
+          </motion.h1>
+
+          <motion.p className="hero-title" {...fadeUp(0.3)}>
+            {data.title}
+          </motion.p>
+
+          <motion.p className="hero-intro" {...fadeUp(0.4)}>
+            {data.intro}
+          </motion.p>
+
+          <motion.div className="hero-actions" {...fadeUp(0.5)}>
+            <a href="#contact" className="btn-primary">
+              Get in touch
+            </a>
+            <a href="/Resume_Yahya_Shoaib.pdf" download className="btn-secondary">
+              Resume ↗
+            </a>
+          </motion.div>
+        </div>
+
         <motion.div
-          className="hero-avatar-wrap"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.25, duration: 0.4 }}
-        >
-          <div className="hero-avatar-flip">
-            <motion.div
-              className="hero-avatar-inner"
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: 180 }}
-              transition={{
-                delay: 0.7,
-                duration: 0.7,
-                ease: [0.33, 0.84, 0.5, 1],
-              }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="hero-avatar-face hero-avatar-back" aria-hidden>
-                <div className="hero-avatar hero-avatar-initials">
-                  {getInitials(data.name)}
-                </div>
-              </div>
-              <div className="hero-avatar-face hero-avatar-front" aria-hidden>
-                {hasImage ? (
-                  <img src={data.profileImage!} alt="" className="hero-avatar" />
-                ) : (
-                  <div className="hero-avatar hero-avatar-initials">
-                    {getInitials(data.name)}
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-        <motion.h1
-          className="hero-name"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          {data.name}
-        </motion.h1>
-        <motion.p
-          className="hero-title"
+          className="hero-aside"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.45 }}
+          transition={{ delay: 0.65, duration: 0.6 }}
         >
-          {data.title}
-        </motion.p>
-        <motion.p
-          className="hero-intro"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          {data.intro}
-        </motion.p>
-        <motion.div
-          className="hero-glow-line"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        />
-      </motion.div>
+          <div className="hero-stat">
+            <span className="stat-num">{expLabel}</span>
+            <span className="stat-label">Years experience</span>
+          </div>
+          <div className="hero-stat">
+            <span className="stat-num">{projectCount}</span>
+            <span className="stat-label">Apps shipped</span>
+          </div>
+          <div className="hero-stat">
+            <span className="stat-num">{companyCount}</span>
+            <span className="stat-label">Companies</span>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

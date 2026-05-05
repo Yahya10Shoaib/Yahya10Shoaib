@@ -27,6 +27,10 @@ export function Home() {
       <Projects data={data} />
       <Experience data={data} />
       <Contact data={data} />
+      <footer className="site-footer">
+        <span className="footer-copy">© {new Date().getFullYear()} {data.name}</span>
+        <a href="#hero" className="footer-back">Back to top ↑</a>
+      </footer>
     </motion.main>
   );
 }

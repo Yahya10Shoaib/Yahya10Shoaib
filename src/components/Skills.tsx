@@ -1,17 +1,22 @@
 import { motion } from 'framer-motion';
 import type { PortfolioData } from '../types/portfolio';
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
+const rowVariant = {
+  hidden: { opacity: 0, x: -16 },
+  show: (i: number) => ({
     opacity: 1,
-    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
-  },
+    x: 0,
+    transition: { duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] as const },
+  }),
 };
 
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0 },
+const chipVariant = {
+  hidden: { opacity: 0, scale: 0.88 },
+  show: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3, delay: i * 0.035, ease: [0.22, 1, 0.36, 1] as const },
+  }),
 };
 
 export function Skills({ data }: { data: PortfolioData }) {
@@ -20,35 +25,47 @@ export function Skills({ data }: { data: PortfolioData }) {
   return (
     <section className="section skills-section" id="skills">
       <motion.div
-        className="skills-header"
-        initial={{ opacity: 0, y: 16 }}
+        className="section-header"
+        initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.45 }}
       >
-        <h2 className="skills-title">
-          <span className="skills-title-main">Technical</span>{' '}
-          <span className="skills-title-accent">Skills</span>
-        </h2>
-        <p className="skills-subtitle">Technologies and tools I use to bring ideas to life</p>
+        <span className="section-label">Expertise</span>
+        <h2 className="section-title">Technical Skills</h2>
+        <p className="section-desc">
+          Technologies and tools I use to build production-ready apps
+        </p>
       </motion.div>
-      <motion.div
-        className="skills-grid"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: '-40px' }}
-      >
-        {entries.map(([category, skills]) => (
-          <motion.div key={category} className="skill-category" variants={item}>
-            <h3 className="skill-category-title">{category}</h3>
+
+      <div className="skills-table">
+        {entries.map(([category, skills], rowIndex) => (
+          <motion.div
+            key={category}
+            className="skills-row"
+            custom={rowIndex}
+            variants={rowVariant}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-40px' }}
+          >
+            <div className="skills-row-meta">
+              <span className="skills-row-num">
+                {String(rowIndex + 1).padStart(2, '0')}
+              </span>
+              <h3 className="skills-row-category">{category}</h3>
+            </div>
+
             <div className="skill-chips">
-              {skills.map((skill) => (
+              {skills.map((skill, chipIndex) => (
                 <motion.span
                   key={skill}
                   className="skill-chip"
-                  variants={item}
-                  whileHover={{ scale: 1.03, boxShadow: '0 0 16px rgba(0, 255, 247, 0.35)' }}
+                  custom={chipIndex}
+                  variants={chipVariant}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: '-30px' }}
                 >
                   {skill}
                 </motion.span>
@@ -56,7 +73,7 @@ export function Skills({ data }: { data: PortfolioData }) {
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 }
