@@ -1490,3 +1490,38 @@ input, textarea { font-family: inherit; }
   min-width: 160px;
   margin-bottom: 0 !important;
 }
+
+/* ─── Drag & Drop ────────────────────────────────────────── */
+
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--text-subtle);
+  background: transparent;
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: grab;
+  transition: color var(--t), background var(--t);
+  touch-action: none;
+}
+
+.drag-handle:hover {
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-overlay-card {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: scale(1.02);
+  opacity: 1 !important;
+  border-color: var(--accent) !important;
+}

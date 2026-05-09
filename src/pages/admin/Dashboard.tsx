@@ -1,6 +1,24 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+  type DragEndEvent,
+  type DragStartEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { ProtectedRoute, setAdmin } from '../../routes/ProtectedRoute';
 import {
   getPortfolioData,
@@ -41,18 +59,36 @@ function ChipList({
   placeholder = 'Add item…',
 }: {
   items: string[];
-  onAdd: (value: string) => void;
+  onAdd: (values: string[]) => void;
   onRemove: (index: number) => void;
   placeholder?: string;
 }) {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ',') {
+  const commitInput = (raw: string) => {
+    const values = raw
+      .split(',')
+      .map((v) => v.trim())
+      .filter(Boolean);
+    if (values.length) {
+      onAdd(values);
+      setInput('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      const v = input.trim();
-      if (v) { onAdd(v); setInput(''); }
+      commitInput(input);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData('text');
+    if (pasted.includes(',')) {
+      e.preventDefault();
+      commitInput(input + pasted);
     }
   };
 
@@ -77,6 +113,7 @@ function ChipList({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
           placeholder={placeholder}
         />
       </div>
@@ -177,6 +214,222 @@ function HeroPanel({
   );
 }
 
+/* ─── drag handle icon ────────────────────────────────────── */
+
+function DragHandle(props: React.HTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button type="button" className="drag-handle" aria-label="Drag to reorder" {...props}>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden>
+        <circle cx="4" cy="3"  r="1.1" /><circle cx="10" cy="3"  r="1.1" />
+        <circle cx="4" cy="7"  r="1.1" /><circle cx="10" cy="7"  r="1.1" />
+        <circle cx="4" cy="11" r="1.1" /><circle cx="10" cy="11" r="1.1" />
+      </svg>
+    </button>
+  );
+}
+
+/* ─── sortable project card ───────────────────────────────── */
+
+function SortableProjectCard({
+  project,
+  setData,
+  removeProject,
+  overlay = false,
+}: {
+  project: Project;
+  setData: React.Dispatch<React.SetStateAction<PortfolioData>>;
+  removeProject: (id: string) => void;
+  overlay?: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: project.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.35 : 1,
+    zIndex: isDragging ? 10 : undefined,
+  };
+
+  const updateProject = (patch: Partial<Project>) => {
+    setData((prev) => {
+      const next = { ...prev, projects: prev.projects.map((p) => p.id === project.id ? { ...p, ...patch } : p) };
+      setPortfolioData(next);
+      return next;
+    });
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`admin-card${overlay ? ' drag-overlay-card' : ''}`}
+    >
+      <div className="admin-card-head">
+        <DragHandle {...listeners} {...attributes} />
+        <input
+          className="admin-input"
+          placeholder="Project title"
+          value={project.title}
+          onChange={(e) => updateProject({ title: e.target.value })}
+        />
+        <button type="button" className="admin-btn admin-btn-small danger" onClick={() => removeProject(project.id)}>
+          Remove
+        </button>
+      </div>
+
+      <label>Description</label>
+      <textarea
+        className="admin-input admin-textarea"
+        placeholder="Short description…"
+        value={project.description}
+        onChange={(e) => updateProject({ description: e.target.value })}
+        rows={2}
+      />
+
+      <label>Tech stack</label>
+      <ChipList
+        items={project.techStack}
+        placeholder="e.g. React, TypeScript, Node.js…"
+        onAdd={(values) => {
+          setData((prev) => {
+            const techStack = [...(prev.projects.find((p) => p.id === project.id)?.techStack ?? []), ...values];
+            const next = { ...prev, projects: prev.projects.map((p) => p.id === project.id ? { ...p, techStack } : p) };
+            setPortfolioData(next);
+            return next;
+          });
+        }}
+        onRemove={(index) => {
+          setData((prev) => {
+            const techStack = (prev.projects.find((p) => p.id === project.id)?.techStack ?? []).filter((_, i) => i !== index);
+            const next = { ...prev, projects: prev.projects.map((p) => p.id === project.id ? { ...p, techStack } : p) };
+            setPortfolioData(next);
+            return next;
+          });
+        }}
+      />
+
+      <label>Role / contribution</label>
+      <input
+        className="admin-input"
+        placeholder="Your role on this project"
+        value={project.role}
+        onChange={(e) => updateProject({ role: e.target.value })}
+      />
+
+      <div className="dash-two-col">
+        <div>
+          <label>Project link</label>
+          <input
+            className="admin-input"
+            type="url"
+            placeholder="https://…"
+            value={project.link ?? ''}
+            onChange={(e) => updateProject({ link: e.target.value })}
+          />
+        </div>
+        <div>
+          <label>Image URL</label>
+          <input
+            className="admin-input"
+            type="url"
+            placeholder="https://…"
+            value={project.image ?? ''}
+            onChange={(e) => updateProject({ image: e.target.value })}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── sortable skill category ─────────────────────────────── */
+
+function SortableSkillCategory({
+  category,
+  skills,
+  setData,
+  categoryRenameDraft,
+  setCategoryRenameDraft,
+  removeSkillCategory,
+  overlay = false,
+}: {
+  category: string;
+  skills: string[];
+  setData: React.Dispatch<React.SetStateAction<PortfolioData>>;
+  categoryRenameDraft: Record<string, string>;
+  setCategoryRenameDraft: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  removeSkillCategory: (cat: string) => void;
+  overlay?: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: category });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.35 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`admin-skill-category${overlay ? ' drag-overlay-card' : ''}`}
+    >
+      <div className="admin-skill-category-header">
+        <DragHandle {...listeners} {...attributes} />
+        <input
+          className="admin-input admin-input-inline"
+          value={categoryRenameDraft[category] ?? category}
+          onChange={(e) => setCategoryRenameDraft((p) => ({ ...p, [category]: e.target.value }))}
+          onBlur={() => {
+            const newName = (categoryRenameDraft[category] ?? category).trim();
+            setCategoryRenameDraft((p) => { const n = { ...p }; delete n[category]; return n; });
+            if (newName && newName !== category) {
+              setData((prev) => {
+                const { [category]: list, ...rest } = prev.skills;
+                const ordered = Object.fromEntries(
+                  Object.keys({ ...rest, [newName]: list }).map((k) => [k, k === newName ? list : prev.skills[k]])
+                );
+                const next = { ...prev, skills: ordered };
+                setPortfolioData(next);
+                return next;
+              });
+            }
+          }}
+          placeholder="Category name"
+        />
+        <button type="button" className="admin-btn admin-btn-small danger" onClick={() => removeSkillCategory(category)}>
+          Remove
+        </button>
+      </div>
+      <ChipList
+        items={skills}
+        placeholder={`React, TypeScript, Node.js…`}
+        onAdd={(values) => {
+          setData((prev) => {
+            const list = [...(prev.skills[category] ?? []), ...values];
+            const next = { ...prev, skills: { ...prev.skills, [category]: list } };
+            setPortfolioData(next);
+            return next;
+          });
+        }}
+        onRemove={(index) => {
+          setData((prev) => {
+            const list = (prev.skills[category] ?? []).filter((_, i) => i !== index);
+            const next = { ...prev, skills: { ...prev.skills, [category]: list } };
+            setPortfolioData(next);
+            return next;
+          });
+        }}
+      />
+    </div>
+  );
+}
+
+/* ─── Skills panel ────────────────────────────────────────── */
+
 function SkillsPanel({
   data,
   setData,
@@ -192,66 +445,84 @@ function SkillsPanel({
   addSkillCategory: () => void;
   removeSkillCategory: (cat: string) => void;
 }) {
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const categoryKeys = Object.keys(data.skills);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveCategory(event.active.id as string);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveCategory(null);
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    setData((prev) => {
+      const keys = Object.keys(prev.skills);
+      const oldIndex = keys.indexOf(active.id as string);
+      const newIndex = keys.indexOf(over.id as string);
+      const reordered = arrayMove(keys, oldIndex, newIndex);
+      const next = {
+        ...prev,
+        skills: Object.fromEntries(reordered.map((k) => [k, prev.skills[k]])),
+      };
+      setPortfolioData(next);
+      return next;
+    });
+  };
+
   return (
     <div className="dash-panel">
       <h2 className="dash-panel-title">Skills</h2>
-      <p className="dash-panel-desc">Manage skill categories and the chips inside them. Press Enter or comma to add a skill.</p>
+      <p className="dash-panel-desc">
+        Drag categories to reorder them. Press Enter or comma to add a skill chip.
+      </p>
 
-      <div className="dash-field-group">
-        {Object.entries(data.skills).map(([category, skills]) => (
-          <div key={category} className="admin-skill-category">
-            <div className="admin-skill-category-header">
-              <input
-                className="admin-input admin-input-inline"
-                value={categoryRenameDraft[category] ?? category}
-                onChange={(e) => setCategoryRenameDraft((p) => ({ ...p, [category]: e.target.value }))}
-                onBlur={() => {
-                  const newName = (categoryRenameDraft[category] ?? category).trim();
-                  setCategoryRenameDraft((p) => { const n = { ...p }; delete n[category]; return n; });
-                  if (newName && newName !== category) {
-                    setData((prev) => {
-                      const { [category]: list, ...rest } = prev.skills;
-                      const next = { ...prev, skills: { ...rest, [newName]: list } };
-                      setPortfolioData(next);
-                      return next;
-                    });
-                  }
-                }}
-                placeholder="Category name"
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={categoryKeys} strategy={verticalListSortingStrategy}>
+          <div className="dash-field-group">
+            {categoryKeys.map((category) => (
+              <SortableSkillCategory
+                key={category}
+                category={category}
+                skills={data.skills[category]}
+                setData={setData}
+                categoryRenameDraft={categoryRenameDraft}
+                setCategoryRenameDraft={setCategoryRenameDraft}
+                removeSkillCategory={removeSkillCategory}
               />
-              <button type="button" className="admin-btn admin-btn-small danger" onClick={() => removeSkillCategory(category)}>
-                Remove
-              </button>
-            </div>
-            <ChipList
-              items={skills}
-              placeholder={`Add skill in ${category}…`}
-              onAdd={(value) => {
-                setData((prev) => {
-                  const list = [...(prev.skills[category] ?? []), value];
-                  const next = { ...prev, skills: { ...prev.skills, [category]: list } };
-                  setPortfolioData(next);
-                  return next;
-                });
-              }}
-              onRemove={(index) => {
-                setData((prev) => {
-                  const list = (prev.skills[category] ?? []).filter((_, i) => i !== index);
-                  const next = { ...prev, skills: { ...prev.skills, [category]: list } };
-                  setPortfolioData(next);
-                  return next;
-                });
-              }}
-            />
+            ))}
           </div>
-        ))}
-        <button type="button" className="admin-btn secondary admin-add-category" onClick={addSkillCategory}>
-          + Add category
-        </button>
-      </div>
+        </SortableContext>
+
+        <DragOverlay>
+          {activeCategory ? (
+            <SortableSkillCategory
+              category={activeCategory}
+              skills={data.skills[activeCategory] ?? []}
+              setData={setData}
+              categoryRenameDraft={categoryRenameDraft}
+              setCategoryRenameDraft={setCategoryRenameDraft}
+              removeSkillCategory={removeSkillCategory}
+              overlay
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
+
+      <button type="button" className="admin-btn secondary admin-add-category" onClick={addSkillCategory}>
+        + Add category
+      </button>
     </div>
   );
 }
+
+/* ─── Projects panel ──────────────────────────────────────── */
 
 function ProjectsPanel({
   data,
@@ -264,101 +535,71 @@ function ProjectsPanel({
   addProject: () => void;
   removeProject: (id: string) => void;
 }) {
-  const updateProject = (id: string, patch: Partial<Project>) => {
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const projectIds = data.projects.map((p) => p.id);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveId(null);
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
     setData((prev) => {
-      const next = { ...prev, projects: prev.projects.map((p) => p.id === id ? { ...p, ...patch } : p) };
+      const oldIndex = prev.projects.findIndex((p) => p.id === active.id);
+      const newIndex = prev.projects.findIndex((p) => p.id === over.id);
+      const next = { ...prev, projects: arrayMove(prev.projects, oldIndex, newIndex) };
       setPortfolioData(next);
       return next;
     });
   };
+
+  const activeProject = activeId ? data.projects.find((p) => p.id === activeId) : null;
 
   return (
     <div className="dash-panel">
       <div className="dash-panel-header">
         <div>
           <h2 className="dash-panel-title">Projects</h2>
-          <p className="dash-panel-desc">{data.projects.length} project{data.projects.length !== 1 ? 's' : ''}</p>
+          <p className="dash-panel-desc">
+            {data.projects.length} project{data.projects.length !== 1 ? 's' : ''} — drag to reorder
+          </p>
         </div>
         <button type="button" className="admin-btn" onClick={addProject}>+ Add project</button>
       </div>
 
-      <div className="dash-cards">
-        {data.projects.map((project) => (
-          <div key={project.id} className="admin-card">
-            <div className="admin-card-head">
-              <input
-                className="admin-input"
-                placeholder="Project title"
-                value={project.title}
-                onChange={(e) => updateProject(project.id, { title: e.target.value })}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={projectIds} strategy={rectSortingStrategy}>
+          <div className="dash-cards">
+            {data.projects.map((project) => (
+              <SortableProjectCard
+                key={project.id}
+                project={project}
+                setData={setData}
+                removeProject={removeProject}
               />
-              <button type="button" className="admin-btn admin-btn-small danger" onClick={() => removeProject(project.id)}>Remove</button>
-            </div>
-
-            <label>Description</label>
-            <textarea
-              className="admin-input admin-textarea"
-              placeholder="Short description…"
-              value={project.description}
-              onChange={(e) => updateProject(project.id, { description: e.target.value })}
-              rows={2}
-            />
-
-            <label>Tech stack</label>
-            <ChipList
-              items={project.techStack}
-              placeholder="e.g. React, TypeScript…"
-              onAdd={(value) => {
-                setData((prev) => {
-                  const techStack = [...(prev.projects.find((p) => p.id === project.id)?.techStack ?? []), value];
-                  const next = { ...prev, projects: prev.projects.map((p) => p.id === project.id ? { ...p, techStack } : p) };
-                  setPortfolioData(next);
-                  return next;
-                });
-              }}
-              onRemove={(index) => {
-                setData((prev) => {
-                  const techStack = (prev.projects.find((p) => p.id === project.id)?.techStack ?? []).filter((_, i) => i !== index);
-                  const next = { ...prev, projects: prev.projects.map((p) => p.id === project.id ? { ...p, techStack } : p) };
-                  setPortfolioData(next);
-                  return next;
-                });
-              }}
-            />
-
-            <label>Role / contribution</label>
-            <input
-              className="admin-input"
-              placeholder="Your role on this project"
-              value={project.role}
-              onChange={(e) => updateProject(project.id, { role: e.target.value })}
-            />
-
-            <div className="dash-two-col">
-              <div>
-                <label>Project link</label>
-                <input
-                  className="admin-input"
-                  type="url"
-                  placeholder="https://…"
-                  value={project.link ?? ''}
-                  onChange={(e) => updateProject(project.id, { link: e.target.value })}
-                />
-              </div>
-              <div>
-                <label>Image URL</label>
-                <input
-                  className="admin-input"
-                  type="url"
-                  placeholder="https://…"
-                  value={project.image ?? ''}
-                  onChange={(e) => updateProject(project.id, { image: e.target.value })}
-                />
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </SortableContext>
+
+        <DragOverlay>
+          {activeProject ? (
+            <SortableProjectCard
+              project={activeProject}
+              setData={setData}
+              removeProject={removeProject}
+              overlay
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
     </div>
   );
 }
@@ -430,9 +671,9 @@ function ExperiencePanel({
             <ChipList
               items={entry.highlights}
               placeholder="Add a highlight and press Enter…"
-              onAdd={(value) => {
+              onAdd={(values) => {
                 setData((prev) => {
-                  const highlights = [...(prev.experience.find((ex) => ex.id === entry.id)?.highlights ?? []), value];
+                  const highlights = [...(prev.experience.find((ex) => ex.id === entry.id)?.highlights ?? []), ...values];
                   const next = { ...prev, experience: prev.experience.map((ex) => ex.id === entry.id ? { ...ex, highlights } : ex) };
                   setPortfolioData(next);
                   return next;
