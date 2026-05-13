@@ -19,8 +19,10 @@ export interface Project {
   role: string;
   /** Optional image URL shown on card flip */
   image?: string;
-  /** Optional project/live link; VISIT button and link icon use this */
+  /** Optional project/live link; VISIT on the card header uses this */
   link?: string;
+  /** Optional Play Store / app store URL; detail modal Visit prefers this when set */
+  playStoreLink?: string;
 }
 
 export interface ExperienceEntry {

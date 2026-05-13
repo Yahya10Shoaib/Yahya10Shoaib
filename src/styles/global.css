@@ -669,6 +669,168 @@ input, textarea { font-family: inherit; }
   transform: scaleX(1);
 }
 
+.project-card--clickable {
+  cursor: pointer;
+}
+
+.project-card--clickable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ─── project detail modal (portal) ───────────────────────── */
+
+.project-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  min-height: 100vh;
+  padding: max(1rem, env(safe-area-inset-top, 0px))
+    max(1rem, env(safe-area-inset-right, 0px))
+    max(1rem, env(safe-area-inset-bottom, 0px))
+    max(1rem, env(safe-area-inset-left, 0px));
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: rgb(15 12 8 / 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.project-modal-perspective {
+  perspective: 1800px;
+  perspective-origin: 50% 50%;
+  width: min(100%, 26rem);
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateZ(0);
+}
+
+.project-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  max-height: min(88vh, 36rem);
+  overflow: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-lg), 0 24px 48px rgb(0 0 0 / 0.12);
+  transform: translateZ(0);
+}
+
+.project-modal-panel-inner {
+  min-height: 100%;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.project-modal-close {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 2;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: color var(--t), background var(--t), border-color var(--t);
+}
+
+.project-modal-close:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.project-modal-image-wrap {
+  width: 100%;
+  padding: 2.5rem 1.25rem 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.project-modal-image {
+  display: block;
+  width: 100%;
+  max-height: 11rem;
+  object-fit: contain;
+  border-radius: calc(var(--r) - 2px);
+  background: var(--bg-elevated);
+}
+
+.project-modal-body {
+  padding: 0.75rem 1.35rem 1.35rem;
+  clear: both;
+}
+
+.project-modal-body--with-close-offset {
+  padding-top: 2.65rem;
+}
+
+.project-modal-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1.2;
+  margin: 0 0 0.65rem;
+  padding-top: 0.25rem;
+}
+
+.project-modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+.project-tech--modal {
+  flex-wrap: wrap;
+  overflow: visible;
+  margin-bottom: 1rem;
+}
+
+.project-modal-role {
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0 0 1.1rem;
+}
+
+.project-modal-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  transition: gap var(--t), color var(--t);
+}
+
+.project-modal-visit:hover {
+  gap: 0.5rem;
+  color: var(--accent-hover);
+}
+
 /* Header row: index number + visit link */
 .project-card-header {
   display: flex;

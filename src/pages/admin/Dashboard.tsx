@@ -346,15 +346,25 @@ function SortableProjectCard({
           />
         </div>
         <div>
-          <label>Image URL</label>
+          <label>Play Store / App Store URL</label>
           <input
             className="admin-input"
             type="url"
-            placeholder="https://…"
-            value={project.image ?? ''}
-            onChange={(e) => updateProject({ image: e.target.value })}
+            placeholder="https://play.google.com/…"
+            value={project.playStoreLink ?? ''}
+            onChange={(e) => updateProject({ playStoreLink: e.target.value })}
           />
         </div>
+      </div>
+      <div>
+        <label>Image URL</label>
+        <input
+          className="admin-input"
+          type="url"
+          placeholder="App screenshot or icon URL"
+          value={project.image ?? ''}
+          onChange={(e) => updateProject({ image: e.target.value })}
+        />
       </div>
     </div>
   );
@@ -809,7 +819,7 @@ function DashboardInner() {
   }, []);
 
   const addProject = useCallback(() => {
-    const blank: Project = { id: newId(), title: '', description: '', techStack: [], role: '', image: '', link: '' };
+    const blank: Project = { id: newId(), title: '', description: '', techStack: [], role: '', image: '', link: '', playStoreLink: '' };
     setData((prev) => { const next = { ...prev, projects: [blank, ...prev.projects] }; setPortfolioData(next); return next; });
   }, []);
 
