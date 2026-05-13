@@ -707,14 +707,33 @@ input, textarea { font-family: inherit; }
   overflow: hidden;
 }
 
-.project-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+.project-tech-wrap {
+  position: relative;
+  min-width: 0;
   margin-bottom: 0.75rem;
 }
 
+/* Off-screen row: same tag styles, used only to measure widths.
+   Fixed positioning avoids parent .project-card overflow:hidden affecting measurements. */
+.project-tech-measure {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: max-content;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
 .project-tech-tag {
+  flex-shrink: 0;
   font-size: 0.68rem;
   font-weight: 500;
   color: var(--text-subtle);
@@ -724,12 +743,24 @@ input, textarea { font-family: inherit; }
   font-family: var(--font-mono);
 }
 
+.project-tech-more {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
 .project-role {
   font-size: 0.75rem;
   color: var(--text-subtle);
   font-style: italic;
   line-height: 1.5;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-clamp: 2;
 }
 
 /* Link / private badge – in the header row */

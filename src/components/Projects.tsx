@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PortfolioData } from '../types/portfolio';
 import type { Project } from '../types/portfolio';
+import { useFittingTags } from './useFittingTags';
 
 const INITIAL_COUNT = 6;
 
@@ -59,6 +60,40 @@ function ChevronUp() {
   );
 }
 
+function ProjectTechTags({ techStack }: { techStack: string[] }) {
+  const tags = techStack;
+  const { containerRef, measureRef, visibleCount } = useFittingTags(tags);
+  const hidden = tags.length - visibleCount;
+
+  if (tags.length === 0) return null;
+
+  return (
+    <div className="project-tech-wrap">
+      <div ref={measureRef} className="project-tech project-tech-measure" aria-hidden>
+        {tags.map((tech, i) => (
+          <span key={`m-${i}-${tech}`} className="project-tech-tag tag-item">
+            {tech}
+          </span>
+        ))}
+      </div>
+      <div ref={containerRef} className="project-tech">
+        {tags.map((tech, i) => (
+          <span
+            key={`t-${i}-${tech}`}
+            className="project-tech-tag tag-item"
+            style={{ display: i < visibleCount ? undefined : 'none' }}
+          >
+            {tech}
+          </span>
+        ))}
+        {hidden > 0 ? (
+          <span className="project-tech-tag project-tech-more">+{hidden}</span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const hasLink = Boolean(project.link?.trim());
   const num = String(index + 1).padStart(2, '0');
@@ -97,12 +132,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       {/* Description – clamped to 3 lines */}
       <p className="project-desc">{project.description}</p>
 
-      {/* Tech stack */}
-      <div className="project-tech">
-        {project.techStack.map((tech) => (
-          <span key={tech} className="project-tech-tag">{tech}</span>
-        ))}
-      </div>
+      {/* Tech stack — one row, +N when overflow */}
+      <ProjectTechTags techStack={project.techStack} />
 
       {/* Role */}
       <p className="project-role">{project.role}</p>
