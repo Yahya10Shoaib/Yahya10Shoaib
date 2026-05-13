@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -57,22 +58,32 @@ function ChipList({
   onAdd,
   onRemove,
   placeholder = 'Add item…',
+  /** When true (default), commas split into multiple chips on commit. When false, the whole line is one chip (e.g. experience highlights). */
+  splitCommaSeparated = true,
 }: {
   items: string[];
   onAdd: (values: string[]) => void;
   onRemove: (index: number) => void;
   placeholder?: string;
+  splitCommaSeparated?: boolean;
 }) {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const commitInput = (raw: string) => {
-    const values = raw
-      .split(',')
-      .map((v) => v.trim())
-      .filter(Boolean);
+    const values = splitCommaSeparated
+      ? raw
+          .split(',')
+          .map((v) => v.trim())
+          .filter(Boolean)
+      : (() => {
+          const one = raw.trim();
+          return one ? [one] : [];
+        })();
     if (values.length) {
-      onAdd(values);
+      flushSync(() => {
+        onAdd(values);
+      });
       setInput('');
     }
   };
@@ -82,9 +93,14 @@ function ChipList({
       e.preventDefault();
       commitInput(input);
     }
+    if (splitCommaSeparated && e.key === ',') {
+      e.preventDefault();
+      commitInput(input);
+    }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    if (!splitCommaSeparated) return;
     const pasted = e.clipboardData.getData('text');
     if (pasted.includes(',')) {
       e.preventDefault();
@@ -113,6 +129,7 @@ function ChipList({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          onBlur={() => commitInput(input)}
           onPaste={handlePaste}
           placeholder={placeholder}
         />
@@ -670,6 +687,7 @@ function ExperiencePanel({
             <label>Highlights</label>
             <ChipList
               items={entry.highlights}
+              splitCommaSeparated={false}
               placeholder="Add a highlight and press Enter…"
               onAdd={(values) => {
                 setData((prev) => {
@@ -731,6 +749,8 @@ function DashboardInner() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('hero');
   const [data, setData] = useState<PortfolioData>(getPortfolioData);
+  const dataRef = useRef(data);
+  dataRef.current = data;
   const [categoryRenameDraft, setCategoryRenameDraft] = useState<Record<string, string>>({});
   const apiSecret = getPortfolioApiSecret() ?? '';
   const [lastSync, setLastSync] = useState<SyncResult | null>(null);
@@ -753,9 +773,9 @@ function DashboardInner() {
 
   const saveToCloud = useCallback(async () => {
     setSyncing(true); setLastSync(null);
-    const result = await setPortfolioData(data);
+    const result = await setPortfolioData(dataRef.current);
     setLastSync(result); setSyncing(false);
-  }, [data]);
+  }, []);
 
   const loadFromCloud = useCallback(async () => {
     setSyncing(true); setLastSync(null);
