@@ -1,113 +1,114 @@
-# 🌟 Yahya Shoaib — React Native Developer  
+# 🌟 Yahya Shoaib — Sr. React Native Developer | MERN Stack Engineer
 
 🚀 **Building High-Performance Mobile Apps for Android & iOS**  
-🎯 **Expert in Debugging | Clean Code | Reusable Components**  
+🎯 **Team Lead | Clean Architecture | Scalable Mobile Solutions**  
 📍 Based in Lahore, Pakistan | 🌍 Available for freelance projects  
 
 ---
 
 ## 🔥 About Me
 
-I’m a **React Native Developer** with over **3 years of experience**, specializing in creating **scalable**, **user-friendly**, and **efficient mobile applications**. My focus is on delivering **high-quality solutions** by crafting **reusable components**, optimizing performance, and implementing clean code architecture.  
+I'm a **Senior React Native Developer** with **4+ years of experience** building and shipping production-grade Android and iOS applications. I've led mobile engineering teams, driven architecture decisions, and consistently improved app performance and code quality across multiple product cycles.
 
-If you’re looking for a **dedicated developer** who can turn your ideas into reality, you’re in the right place! 
-
----
-
-## 🚀 Tech Stack & Expertise  
-
-I leverage the latest technologies to create high-performance mobile apps for Android and iOS using the **React Native** framework. Below are the key technologies I work with:
-
-### 🛠️ **Core Technologies**  
-- **React Native** (CLI, Expo, Expo Router)  
-- **Languages:** JavaScript, TypeScript  
-- **State Management:** Redux Toolkit (RTK Query), TanStack Query  
-
-### ⚙️ **Backend & Integrations**  
-- **Firebase** (Auth, Firestore, Storage, Cloud Functions)  
-- **Push Notifications:** FCM, OneSignal  
-- **Real-Time Communication:** Socket.IO, Action Cable (for chats, event-based gateways)  
-- **Payments & Subscriptions:** Stripe, In-app purchases  
-- **Conversational AI:** ChatGPT Integration  
-
-### 🌍 **Maps & Location Services**  
-- **Map Services:** Google Maps, Mapbox  
-
-### 📞 **Real-Time Communication**  
-- **Audio/Video Calling & Live Streaming:** Agora  
-
-### 💾 **Local Data Storage**  
-- **Database:** WatermelonDB (for high-performance offline-first apps)  
-
-### 🧑‍💻 **Version Control & Collaboration**  
-- **Git & GitHub:** Proper branching strategies for code collaboration  
-
-### 🧑‍💻 **Other Skills & Tools**  
-- **Debugging & Optimization:** Expertise in solving complex bugs, performance tuning, and clean architecture  
-- **CI/CD Tools:** GitHub Actions, Expo Build 
+Proficient in **JavaScript**, **TypeScript**, **Redux**, and the full React Native ecosystem, with growing full-stack capability in **Node.js**, **React.js**, and the **MERN stack**. Solid integration experience across **Firebase**, **Stripe**, and **Socket.IO**. Known for writing clean, scalable code, mentoring junior developers, and collaborating closely with product and design teams to deliver apps users actually enjoy.
 
 ---
 
-## 🌟 Featured Projects  
+## 💼 Work Experience
 
-### 📱 **MyVisits**  
-**Description:** MyVisits is a location-based doctor visit management app. Doctors can
-check in to patient locations by scanning a unique QR code assigned to each patient via
-the web portal. Once scanned, a visit session is started and mileage tracking begins
-automatically in the background. After the consultation, doctors can mark the visit as
-complete. The app also offers Telehealth support through the device’s native calling
-feature. Additionally, doctors can download their complete visit and mileage history for
-record-keeping and reporting purposes.  
-- **Features:** Real-time location tracking, seamless QR-based check-ins, secure data storage, and performance-focused design
-- **Tech Used:** React Native, QR Scanner,  Redux, RTK Query  
+### 🏢 **Sr. React Native Developer** | Wateen Telecom Limited *(Apr 2026 – Present)*
+- Contributing to mobile and web development within a large-scale enterprise telecom environment, building features across Android and iOS.
+- Expanding into full-stack development using Node.js and React.js, bridging mobile and backend workstreams as part of a broader MERN stack transition.
+- Applying React Native best practices — reusable components, clean architecture, and performance-first development — to deliver maintainable production code.
+- Collaborating with cross-functional teams to align technical delivery with product requirements and business objectives.
 
-[![MyVists](https://play-lh.googleusercontent.com/KwX0F26jNq18_WaSnPX00qpDsF9bjBH8Lr7doWKbdclEEqEDBt1AWyd5eDXNbj8=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.catanco&pcampaignid=web_share)
+### 🏢 **Sr. React Native Developer — Team Lead** | TX Dynamics *(May 2025 – Apr 2026)*
+- Led a team of React Native developers, overseeing architecture design, code reviews, and feature delivery across Android and iOS platforms.
+- Established coding standards and reusable component libraries that reduced feature development time and improved consistency across the codebase.
+- Diagnosed and resolved critical production issues, reducing app crash rates and improving overall stability for end users.
+- Collaborated directly with product managers and stakeholders to translate business requirements into scalable, maintainable technical solutions.
+- Mentored junior developers through pair programming, structured feedback, and architecture walkthroughs.
+
+### 🏢 **Sr. React Native Developer** | Viral Square *(Aug 2024 – Apr 2025)*
+- Spearheaded performance optimization efforts, identifying and resolving UI bottlenecks that improved app responsiveness and reduced render times.
+- Built and shipped new product features end-to-end across Android and iOS, coordinating with QA for smooth, stable releases.
+- Integrated third-party services including Firebase (analytics, push notifications) and Stripe (payment flows), improving retention and monetization.
+- Refactored legacy components using TypeScript and modular patterns, reducing technical debt and improving long-term maintainability.
+
+### 🏢 **React Native Developer** | Semantic Solutions *(Apr 2022 – Jul 2024)*
+- Contributed to multiple production React Native projects from initial development through deployment on both platforms.
+- Debugged complex UI and logic issues across Android and iOS, reducing reported bug count and improving overall user experience.
+- Implemented reusable components and screen flows using modular architecture patterns, speeding up development across concurrent projects.
+- Collaborated with senior engineers through structured code reviews, adopting mobile best practices in a fast-paced product environment.
 
 ---
 
-### 🛠️ **Major Lift**  
-**Description:** MajorLift is a platform designed for engineers to connect with job
-opportunities efficiently. Engineers can register themselves, browse available jobs
-posted by admins, and submit their bids by answering relevant questions and uploading
-estimates in PDF format. The admin evaluates the bids and assigns the job to the most
-suitable engineer, ensuring a streamlined and organized workflow for both parties.
+## 🚀 Tech Stack & Expertise
+
+### 🛠️ **Languages**
+- **JavaScript** (ES6+), **TypeScript**
+
+### 📱 **Mobile Development**
+- **React Native** CLI, Expo, Android Studio, Xcode
+
+### 🖥️ **Frontend**
+- **React.js**, Redux, Redux Toolkit
+
+### ⚙️ **Backend & APIs**
+- **Node.js**, REST APIs, Express.js *(learning)*
+- **MERN Stack** (MongoDB, Express, React, Node) — in progress
+
+### 🔗 **Services & Integrations**
+- **Firebase** (Auth, Firestore, FCM)
+- **Stripe** (payment flows, in-app subscriptions)
+- **Socket.IO** (real-time communication)
+
+### 🧑‍💻 **Tools & Version Control**
+- Git, GitHub, NVM, Yarn, VS Code
+
+---
+
+## 🌟 Featured Projects
+
+Full portfolio: [tinyurl.com/YahyaShoaib](https://tinyurl.com/YahyaShoaib)
+
+---
+
+### 📱 **UniHub & UniHub Services**
+**Description:** A dual-app ecosystem for university students and service providers — featuring real-time messaging, booking flows, and role-based navigation architecture. UniHub enables students to list and sell products, event tickets, or services. UniHub Services is the seller-focused counterpart, empowering users to manage listings, track sales, and monetize offerings via Stripe.
+- **Tech Used:** React Native CLI, TypeScript, Socket.IO, Stripe, Firebase Cloud Messaging (FCM), Redux
+
+[![Unihub](https://play-lh.googleusercontent.com/JsHojcP3k7pih_zF4JOq5VK39lQCTPdJJHHuE4wnPj2QN1hPZgIx8WdEzbcaBE2JU7c=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.unihub&pcampaignid=web_share)
+[![Unihub Services](https://play-lh.googleusercontent.com/sMM3pdHhWpf0yQy49lyWaIx_kSAy9ZkstkkrOdDAAWM2lqoi02u2DBgwxWfG6B_yyg=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.unihubservices&pcampaignid=web_share)
+
+---
+
+### 🏥 **MyVisits**
+**Description:** Telehealth and doctor home visit appointment application with real-time API integration using RTK Query. Features scalable patient booking flows, appointment management, QR-based check-ins, and mileage tracking. Smooth cross-platform user experience with optimized performance.
+- **Features:** Real-time location tracking, seamless QR-based check-ins, secure data storage, performance-focused design
+- **Tech Used:** React Native, RTK Query, Firebase, Redux, QR Scanner
+
+[![MyVisits](https://play-lh.googleusercontent.com/KwX0F26jNq18_WaSnPX00qpDsF9bjBH8Lr7doWKbdclEEqEDBt1AWyd5eDXNbj8=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.catanco&pcampaignid=web_share)
+
+---
+
+### 🚗 **Cabz**
+**Description:** Ride-hailing mobile application with scalable architecture, clean navigation flow, and reusable components. Developed with a focus on performance, maintainability, and seamless user experience.
+- **Tech Used:** React Native CLI, TypeScript
+
+---
+
+### 🏗️ **Major Lift**
+**Description:** A platform designed for engineers to connect with job opportunities. Engineers can register, browse available jobs posted by admins, and submit bids by answering relevant questions and uploading estimates in PDF format. The admin evaluates bids and assigns jobs to the most suitable engineer.
 - **Features:** Intuitive UI, streamlined bidding system, reusable and modular components
-- **Tech Used:** React Native, Axios, Tanstack Query Firebase Cloud Messaging (FCM), Redux
+- **Tech Used:** React Native, Axios, TanStack Query, Firebase Cloud Messaging (FCM), Redux
 
 [![Major Lift](https://play-lh.googleusercontent.com/_b3nML1u8lPYshAqa0jJo78Icmg5mJyLoQy2PX-jBdD5-wkgTAt818SHpJGaft5BH3U=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.majorlift&pcampaignid=web_share)
 
 ---
 
-### 📋 **Unihub**  
-**Description:** UniHub is a marketplace app designed primarily for students, enabling
-them to list and sell products, event tickets, or services to earn extra income. The
-platform offers an intuitive interface, making it easy to connect buyers and sellers within
-a student community.  
-- **Features:** User-friendly design, seamless navigation, reusable components for easy order management
-- **Tech Used:** React Native, Stripe Integration, Firebase Cloud Messaging (FCM), Redux
-
-[![Unihub](https://play-lh.googleusercontent.com/JsHojcP3k7pih_zF4JOq5VK39lQCTPdJJHHuE4wnPj2QN1hPZgIx8WdEzbcaBE2JU7c=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.unihub&pcampaignid=web_share)
-
----
-
-### 🛠️ **Unihub Services**  
-**Description:** UniHub Services is the seller-focused counterpart of UniHub, empowering
-users to manage their listings, track sales, and enhance their reach. The app integrates
-in-app purchases and Stripe for seamless payment processing, providing a secure and
-efficient way for sellers to monetize their offerings. 
-- **Features:** User-friendly design, seamless navigation, reusable components for easy order management
-- **Tech Used:** React Native, Stripe Integration, Firebase Cloud Messaging (FCM), Redux
-
-[![Unihub Services](https://play-lh.googleusercontent.com/sMM3pdHhWpf0yQy49lyWaIx_kSAy9ZkstkkrOdDAAWM2lqoi02u2DBgwxWfG6B_yyg=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.unihubservices&pcampaignid=web_share)
-
----
-
-### 🛠️ **Beetkom**  
-**Description:** Beetkom is a property listing app where admins can post properties
-available for rent or sale, complete with detailed descriptions, facilities, and photos.
-Users can explore a wide range of properties, filter based on their preferences, and
-contact the admin directly if interested, making the process of finding a desired property
-seamless and efficient.
+### 🏠 **Beetkom**
+**Description:** A property listing app where admins can post properties available for rent or sale, complete with detailed descriptions, facilities, and photos. Users can explore a wide range of properties, filter based on their preferences, and contact the admin directly.
 - **Features:** Intuitive UI, filterable listings, direct admin contact, modular and reusable components
 - **Tech Used:** React Native, Redux, Localization (i18n), Firebase Social Login
 
@@ -115,45 +116,39 @@ seamless and efficient.
 
 ---
 
-### 🛠️ **PELP**  
-**Description:** PELP is an app designed for English language learners, offering a
-comprehensive learning experience. Users can subscribe to the course to access daily
-recorded lectures, take tests, and complete MCQs to track their progress. The app also
-features a microphone tool to enhance vocabulary learning, providing an interactive and
-effective way to improve English language skills.
-- **Features:** Intuitive UI, filterable listings, direct admin contact, modular and reusable components
+### 📚 **PELP**
+**Description:** An app designed for English language learners, offering a comprehensive learning experience. Users can subscribe to access daily recorded lectures, take tests, and complete MCQs to track their progress. Features a microphone tool to enhance vocabulary learning.
+- **Features:** Interactive learning, subscription-based access, progress tracking, vocabulary tools
 - **Tech Used:** React Native, Redux, Localization (i18n), Firebase Social Login
 
 [![PELP](https://play-lh.googleusercontent.com/RQQ31n6G7hWzyV21TYm-mvnxZNeu-GXOi3AVpck1i-AVXMdL7m134O6o4-DezfEe5A=w480-h960-rw)](https://play.google.com/store/apps/details?id=com.semantic.pelp&pcampaignid=web_share)
 
 ---
 
-## 🎯 Let’s Work Together!  
+## 🎓 Education
+
+**Bachelor of Science in Computer Science** *(2016 – 2018)*  
+Khawaja Fareed College, Lahore
+
+---
+
+## 🌐 Languages
+
+- **English** — Professional working proficiency  
+- **Urdu** — Native  
+
+---
+
+## 🎯 Let's Work Together!
+
 I help clients transform their ideas into **world-class mobile apps**.  
-**Let’s create something amazing!**  
+**Let's create something amazing!**
 
 📧 **Email:** [yahyashoaib112@gmail.com](mailto:yahyashoaib112@gmail.com)  
 📱 **Phone:** +92-304-008-5246  
+🔗 **Portfolio:** [tinyurl.com/YahyaShoaib](https://tinyurl.com/YahyaShoaib)  
 🔗 **LinkedIn:** [linkedin.com/in/yahya10shoaib](https://linkedin.com/in/yahya10shoaib)  
 
 ---
 
-## 💼 Work Experience
-
-- **React Native Developer at Viral Square** *(August 2024 – Present)*  
-  - Leading the development of mobile applications with a focus on performance and scalability  
-  - Integrating advanced features like real-time updates, Stripe payments, and offline-first capabilities  
-  - Maintaining clean architecture and reusable code components
-
-- **React Native Developer at Semantic Solutions** *(June 2022 – July 2024)*  
-  - Developed multiple production-ready apps for Android & iOS  
-  - Optimized app performance, implemented reusable components, and integrated third-party services  
-  - Collaborated with cross-functional teams to deliver scalable solutions on tight deadlines
-
-- **React Native Intern at Solutions Wall** *(April 2022 – June 2022)*  
-  - Gained hands-on experience in debugging and collaborating on real-world app projects  
-  - Contributed to UI enhancement and component reuse strategies  
-
----
-
-*Click on any project to learn more!* Let’s collaborate and build apps that make a difference.
+*Click on any project image to view it on the Play Store!*
